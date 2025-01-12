@@ -19,7 +19,7 @@ def add_category():
     if 'name' not in data:
         return jsonify({'error': 'Missing name'}), 400
     cid = uuid.uuid4().hex
-    categories[cid] = {'name': data['name'], 'id': cid}
+    categories[cid] = {'id': cid, 'name': data['name']}
     return jsonify(categories[cid]), 201
 
 @category.route('/category', methods=['DELETE'])

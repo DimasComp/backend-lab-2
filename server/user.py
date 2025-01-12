@@ -6,27 +6,27 @@ user = Blueprint('user', __name__)
 
 @user.route('/users', methods=['GET'])
 def get_users():
-    return jsonify(users)
+    return jsonify(users.values())
 
 @user.route('/user/<id>', methods=['GET'])
-def get_user(uid):
-    if uid not in users:
+def get_user(id):
+    if id not in users:
         return jsonify({'error': 'User not found'}), 404
-    return jsonify(users[uid])
+    return jsonify(users[id])
 
 @user.route('/user', methods=['POST'])
 def add_user():
     data = request.get_json()
     if 'name' not in data:
         return jsonify({'error': 'Missing name'}), 400
-    uid = uuid.uuid4().hex
-    users[uid] = {'name': data['name'], 'id': uid}
-    return jsonify(users[uid]), 201
+    id = uuid.uuid4().hex
+    users[id] = {'id': id, 'name': data['name']}
+    return jsonify(users[id]), 201
 
 @user.route('/user/<id>', methods=['DELETE'])
-def delete_user(uid):
-    if uid not in users:
+def delete_user(id):
+    if id not in users:
         return jsonify({'error': 'User not found'}), 404
-    user = users[uid]
-    del users[uid]
+    user = users[id]
+    del users[id]
     return jsonify(user), 200

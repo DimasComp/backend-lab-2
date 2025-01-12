@@ -9,10 +9,10 @@ zone = pytz.timezone('Etc/GMT+2')
 
 
 @record.route('/record/<id>', methods=['GET'])
-def get_record(rid):
-    if rid not in records:
+def get_record(id):
+    if id not in records:
         return jsonify({'error': 'Record not found'}), 404
-    return jsonify(records[rid])
+    return jsonify(records[id])
 
 
 @record.route('/record', methods=['POST'])
@@ -20,17 +20,17 @@ def add_record():
     data = request.get_json()
     if any(k not in data for k in ['user_id', 'category_id', 'amount']):
         return jsonify({'error': 'Missing name, cid or amount'}), 400
-    rid = uuid.uuid4().hex
-    records[rid] = {'user_id': data['user_id'], 'category_id': data['category_id'], 'amount': data['amount'],
-                    'id': rid, 'date': datetime.now(pytz.utc).strftime('%d-%m-%Y %H:%M:%S')}
-    return jsonify(records[rid]), 201
+    id = uuid.uuid4().hex
+    records[id] = {'id': id, 'user_id': data['user_id'], 'category_id': data['category_id'],
+                   'amount': data['amount'], 'date': datetime.now(pytz.utc).strftime('%d-%m-%Y %H:%M:%S')}
+    return jsonify(records[id]), 201
 
 @record.route('/record/<id>', methods=['DELETE'])
-def delete_record(rid):
-    if rid not in records:
+def delete_record(id):
+    if id not in records:
         return jsonify({'error': 'Record not found'}), 404
-    record = records[rid]
-    del records[rid]
+    record = records[id]
+    del records[id]
     return jsonify(record), 200
 
 @record.route('/record', methods=['GET'])

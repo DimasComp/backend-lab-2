@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from server.db import categories
+import uuid
 
 category = Blueprint('category', __name__)
 
@@ -10,15 +11,13 @@ def get_category():
         return jsonify({'error': 'Missing id'}), 400
     if data['id'] not in categories:
         return jsonify({'error': 'Category not found'}), 404
-    return jsonify(categories.get(data['id']))
+    return jsonify(categories[data['id']])
 
 @category.route('/category', methods=['POST'])
 def add_category():
     data = request.get_json()
     if 'name' not in data:
         return jsonify({'error': 'Missing name'}), 400
-    if data['id'] in categories:
-        return jsonify({'error': 'Category already exists'}), 400
     cid = uuid.uuid4().hex
     categories[cid] = {'name': data['name'], 'id': cid}
     return jsonify(categories[cid]), 201

@@ -4,6 +4,8 @@ from server.routes.category import category
 from server.routes.record import record
 
 app = Flask(__name__)
+app.config.from_file('config.py', silent=True)
+
 app.register_blueprint(user)
 app.register_blueprint(category)
 app.register_blueprint(record)

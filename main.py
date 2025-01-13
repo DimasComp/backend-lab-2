@@ -1,7 +1,7 @@
 from flask import Flask, blueprints
-from server.user import user
-from server.category import category
-from server.record import record
+from server.routes.user import user
+from server.routes.category import category
+from server.routes.record import record
 
 app = Flask(__name__)
 app.register_blueprint(user)

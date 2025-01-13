@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "4661cbfb-173b-45fa-bb1f-a39f271ad979",
-		"name": "backend-2",
+		"_postman_id": "294e4f2d-8aff-489b-9991-8e785694541b",
+		"name": "backend-3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40954733",
-		"_collection_link": "https://www.postman.com/ddemchyk/workspace/backend-labs/collection/40954733-4661cbfb-173b-45fa-bb1f-a39f271ad979?action=share&source=collection_link&creator=40954733"
+		"_collection_link": "https://www.postman.com/ddemchyk/workspace/backend-labs/collection/40954733-294e4f2d-8aff-489b-9991-8e785694541b?action=share&source=collection_link&creator=40954733"
 	},
 	"item": [
 		{
@@ -32,6 +32,35 @@
 							],
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_money",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domain}}/user/{{user_id}}/add_money",
+							"protocol": "http",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"user",
+								"{{user_id}}",
+								"add_money"
 							]
 						}
 					},

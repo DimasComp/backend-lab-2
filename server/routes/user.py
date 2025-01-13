@@ -10,7 +10,8 @@ user = Blueprint('user', __name__)
 @user.route('/users', methods=['GET'])
 def get_users():
     users = UserModel.query.all()
-    return jsonify(user_schema.dump(users))
+    print(users)
+    return jsonify(users_schema.dump(users))
 
 @user.route('/user/<id>', methods=['GET'])
 def get_user(id):

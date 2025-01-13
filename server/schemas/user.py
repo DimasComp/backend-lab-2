@@ -5,3 +5,4 @@ class UserSchema(Schema):
     name = fields.Str(required=True, validate=validate.Length(min=1))
 
 user_schema = UserSchema()
+users_schema = UserSchema(many=True)

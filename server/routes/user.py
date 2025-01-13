@@ -1,14 +1,13 @@
 from flask import Blueprint, jsonify, request
 from server.models.user import UserModel
-from server.schemas.user import user_schema, UserSchema
-from server.db import db
+from server.schemas.user import user_schema, users_schema
+from server.globals import db
 
 user = Blueprint('user', __name__)
 
 @user.route('/users', methods=['GET'])
 def get_users():
     users = UserModel.query.all()
-    user_schema = UserSchema(many=True)
     return jsonify(user_schema.dump(users))
 
 @user.route('/user/<id>', methods=['GET'])

@@ -1,4 +1,5 @@
 import uuid
+from server.globals import db
 
 class CategoryModel(db.Model):
     __tablename__ = 'category'

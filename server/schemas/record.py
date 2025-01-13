@@ -8,3 +8,4 @@ class RecordSchema(Schema):
     date = fields.DateTime(dump_only=True)
 
 record_schema = RecordSchema()
+records_schema = RecordSchema(many=True)

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from main import db
+from server.globals import db
 from server.models.record import RecordModel
 from server.schemas.record import record_schema, records_schema
 

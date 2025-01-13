@@ -12,5 +12,6 @@ RUN python -m pip install -r requirements.txt
 
 COPY . /app
 
+RUN chmod +x run.sh
 
-CMD ["python", "main.py"]
+CMD ["sh", "run.sh"]

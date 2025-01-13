@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from main import db
+from server.globals import db
 from server.models.category import CategoryModel
 from server.schemas.category import category_schema
 

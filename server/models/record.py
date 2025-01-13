@@ -1,6 +1,7 @@
 from datetime import datetime
 import pytz
 import uuid
+from server.globals import db
 
 zone = pytz.timezone('Etc/GMT+2')
 

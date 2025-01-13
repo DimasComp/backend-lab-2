@@ -1,5 +1,6 @@
 from server.globals import db
 import uuid
+import sys
 
 class WalletModel(db.Model):
     __tablename__ = 'wallets'

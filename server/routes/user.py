@@ -34,11 +34,18 @@ def add_user():
     db.session.commit()
     return jsonify(user_schema.dump(new_user)), 201
 
+
 @user.route('/user/<id>', methods=['DELETE'])
 def delete_user(id):
     user = UserModel.query.get(id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
+
+    wallet_id = user.wallet_id
+    wallet = WalletModel.query.get(wallet_id)
+    if wallet:
+        db.session.delete(wallet)
+
     db.session.delete(user)
     db.session.commit()
     return jsonify(user_schema.dump(user)), 200

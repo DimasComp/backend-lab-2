@@ -1,3 +1,0 @@
-users = {}
-categories = {}
-records = {}

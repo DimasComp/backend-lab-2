@@ -4,10 +4,12 @@ import uuid
 
 zone = pytz.timezone('Etc/GMT+2')
 
-class Record(db.Model):
+
+class RecordModel(db.Model):
     __tablename__ = 'records'
-    
-    id = db.Column(db.String(32), primary_key=True, default=lambda: uuid.uuid4().hex)
+
+    id = db.Column(db.String(32), primary_key=True,
+                   default=lambda: uuid.uuid4().hex)
     user_id = db.Column(db.String(32), nullable=False)
     category_id = db.Column(db.String(32), nullable=False)
     amount = db.Column(db.Float, nullable=False)

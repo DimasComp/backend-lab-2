@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
-from server.db import categories
-import uuid
+from main import db
+from server.models.category import CategoryModel
+from server.schemas.category import category_schema
 
 category = Blueprint('category', __name__)
 
@@ -9,26 +10,30 @@ def get_category():
     data = request.get_json()
     if 'id' not in data:
         return jsonify({'error': 'Missing id'}), 400
-    if data['id'] not in categories:
+    category = CategoryModel.query.get(data['id'])
+    if not category:
         return jsonify({'error': 'Category not found'}), 404
-    return jsonify(categories[data['id']])
+    return jsonify(category.to_dict())
 
 @category.route('/category', methods=['POST'])
 def add_category():
     data = request.get_json()
-    if 'name' not in data:
-        return jsonify({'error': 'Missing name'}), 400
-    cid = uuid.uuid4().hex
-    categories[cid] = {'id': cid, 'name': data['name']}
-    return jsonify(categories[cid]), 201
+    errors = category_schema.validate(data)
+    if errors:
+        return jsonify(errors), 400
+    new_category = CategoryModel(name=data['name'])
+    db.session.add(new_category)
+    db.session.commit()
+    return jsonify(new_category.to_dict()), 201
 
 @category.route('/category', methods=['DELETE'])
 def delete_category():
     data = request.get_json()
     if 'id' not in data:
         return jsonify({'error': 'Missing id'}), 400
-    if data['id'] not in categories:
+    category = CategoryModel.query.get(data['id'])
+    if not category:
         return jsonify({'error': 'Category not found'}), 404
-    category = categories.get(data['id'])
-    del categories[data['id']]
-    return jsonify(category), 200
+    db.session.delete(category)
+    db.session.commit()
+    return jsonify(category.to_dict()), 200

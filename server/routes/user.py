@@ -1,32 +1,39 @@
 from flask import Blueprint, jsonify, request
-from server.db import users
-import uuid
+from server.models.user import UserModel
+from server.schemas.user import user_schema, UserSchema
+from server.db import db
 
 user = Blueprint('user', __name__)
 
 @user.route('/users', methods=['GET'])
 def get_users():
-    return jsonify(users.values())
+    users = UserModel.query.all()
+    user_schema = UserSchema(many=True)
+    return jsonify(user_schema.dump(users))
 
 @user.route('/user/<id>', methods=['GET'])
 def get_user(id):
-    if id not in users:
+    user = UserModel.query.get(id)
+    if not user:
         return jsonify({'error': 'User not found'}), 404
-    return jsonify(users[id])
+    return jsonify(user_schema.dump(user))
 
 @user.route('/user', methods=['POST'])
 def add_user():
     data = request.get_json()
-    if 'name' not in data:
-        return jsonify({'error': 'Missing name'}), 400
-    id = uuid.uuid4().hex
-    users[id] = {'id': id, 'name': data['name']}
-    return jsonify(users[id]), 201
+    errors = user_schema.validate(data)
+    if errors:
+        return jsonify(errors), 400
+    new_user = UserModel(name=data['name'])
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify(user_schema.dump(new_user)), 201
 
 @user.route('/user/<id>', methods=['DELETE'])
 def delete_user(id):
-    if id not in users:
+    user = UserModel.query.get(id)
+    if not user:
         return jsonify({'error': 'User not found'}), 404
-    user = users[id]
-    del users[id]
-    return jsonify(user), 200
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify(user_schema.dump(user)), 200

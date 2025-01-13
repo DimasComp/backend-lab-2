@@ -1,4 +1,4 @@
-# backend-lab-1
+# backend-lab-2
 
 (Демчик Дмитро ІМ-21)
 

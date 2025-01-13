@@ -2,7 +2,7 @@ import uuid
 from server.globals import db
 
 class CategoryModel(db.Model):
-    __tablename__ = 'category'
+    __tablename__ = 'categories'
 
     id = db.Column(db.String(32), primary_key=True,
                    default=lambda: uuid.uuid4().hex)

@@ -1,9 +1,9 @@
-from datetime import datetime
-import pytz
-import uuid
 from server.globals import db
-
-zone = pytz.timezone('Etc/GMT+2')
+from server.models.user import UserModel
+from server.models.category import CategoryModel
+import uuid
+import pytz
+from datetime import datetime
 
 
 class RecordModel(db.Model):
@@ -11,10 +11,22 @@ class RecordModel(db.Model):
 
     id = db.Column(db.String(32), primary_key=True,
                    default=lambda: uuid.uuid4().hex)
-    user_id = db.Column(db.String(32), nullable=False)
-    category_id = db.Column(db.String(32), nullable=False)
+    user_id = db.Column(db.String(32), db.ForeignKey('users.id'))
+    user = db.relationship('UserModel', backref='records')
+    category_id = db.Column(db.String(32), db.ForeignKey('categories.id'))
+    category = db.relationship('CategoryModel', backref='records')
     amount = db.Column(db.Float, nullable=False)
-    date = db.Column(db.DateTime, default=lambda: datetime.now(pytz.utc))
+    date = db.Column(db.DateTime, default=datetime.now(pytz.utc))
+
+    def __init__(self, user_id, category_id, amount):
+        self.user_id = user_id
+        self.category_id = category_id
+        self.amount = amount
+        user = UserModel.query.get(self.user_id)
+        if not user:
+            raise ValueError(f"User with id: {self.user_id} not found")
+
+        user.subtract_money_from_wallet(amount)
 
     def to_dict(self):
         return {

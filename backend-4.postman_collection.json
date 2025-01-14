@@ -1,23 +1,23 @@
 {
 	"info": {
-		"_postman_id": "294e4f2d-8aff-489b-9991-8e785694541b",
-		"name": "backend-3",
+		"_postman_id": "1d7a373d-ad02-40ae-96ab-5cce3eb95275",
+		"name": "backend-4",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40954733",
-		"_collection_link": "https://www.postman.com/ddemchyk/workspace/backend-labs/collection/40954733-294e4f2d-8aff-489b-9991-8e785694541b?action=share&source=collection_link&creator=40954733"
+		"_collection_link": "https://www.postman.com/ddemchyk/workspace/backend-labs/collection/40954733-1d7a373d-ad02-40ae-96ab-5cce3eb95275?action=share&source=collection_link&creator=40954733"
 	},
 	"item": [
 		{
 			"name": "user",
 			"item": [
 				{
-					"name": "add_user",
+					"name": "register_user",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"testuser\"\n}",
+							"raw": "{\n    \"name\": \"testuser\",\n    \"password\": \"pA$$word\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -38,10 +38,43 @@
 					"response": []
 				},
 				{
-					"name": "add_money",
+					"name": "login",
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"testuser\",\n    \"password\": \"pA$$word\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{domain}}/login",
+							"protocol": "http",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"amount\": 100\n}",
@@ -70,7 +103,13 @@
 					"name": "get_user",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://{{domain}}/user/{{user_id}}",
 							"protocol": "http",
@@ -89,7 +128,13 @@
 					"name": "delete_user",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://{{domain}}/user/{{user_id}}",
 							"protocol": "http",
@@ -108,7 +153,13 @@
 					"name": "get_users_all",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://{{domain}}/users",
 							"protocol": "http",
@@ -131,7 +182,13 @@
 					"name": "add_category",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"name\": \"testcategory\"\n}",
@@ -168,6 +225,11 @@
 								"value": "application/json",
 								"type": "text",
 								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -196,7 +258,13 @@
 					"name": "delete_category",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"id\": \"{{category_id}}\"\n}",
@@ -228,7 +296,13 @@
 					"name": "add_record",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"user_id\": \"{{user_id}}\",\n\t\"category_id\": \"{{category_id}}\",\n\t\"amount\": {{amount}}\n}",
@@ -255,7 +329,13 @@
 					"name": "get_record",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://{{domain}}/record/{{record_id}}",
 							"protocol": "http",
@@ -274,7 +354,13 @@
 					"name": "delete_record",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://{{domain}}/record/{{record_id}}",
 							"protocol": "http",
@@ -296,7 +382,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"user_id\": \"{{user_id}}\",\n    \"category_id\": \"{{category_id}}\"\n}",

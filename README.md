@@ -2,6 +2,8 @@
 
 (Демчик Дмитро ІМ-21)
 
+ІМ-**21** => 21 % 3 = 0 => Облік доходів
+
 Запуск з docker-compose: POSTGRES_DB=<db name> POSTGRES_PASSWORD=<pass> POSTGRES_USER=<user> POSTGRES_HOST=<host+port> docker-compose up --build
 
 Посилання на render: https://backend-lab-3-os1b.onrender.com

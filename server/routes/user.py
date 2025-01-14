@@ -8,18 +8,21 @@ import pbkdf2_sha256
 
 user = Blueprint('user', __name__)
 
+@jwt_required()
 @user.route('/users', methods=['GET'])
 def get_users():
     users = UserModel.query.all()
     print(users)
     return jsonify(users_schema.dump(users))
 
+@jwt_required()
 @user.route('/user/<id>', methods=['GET'])
 def get_user(id):
     user = UserModel.query.get(id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
     return jsonify(user_schema.dump(user))
+
 
 @user.route('/user', methods=['POST'])
 def register():
@@ -36,6 +39,7 @@ def register():
     db.session.commit()
     return jsonify(user_schema.dump(new_user)), 201
 
+
 @user.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -49,6 +53,7 @@ def login():
     return jsonify({'token': jwt.create_access_token(identity=user.id)}), 200
 
 
+@jwt_required()
 @user.route('/user/<id>', methods=['DELETE'])
 def delete_user(id):
     user = UserModel.query.get(id)
@@ -64,6 +69,8 @@ def delete_user(id):
     db.session.commit()
     return jsonify(user_schema.dump(user)), 200
 
+
+@jwt_required()
 @user.route('/user/<id>/add_money', methods=['POST'])
 def add_money(id):
     data = request.get_json()

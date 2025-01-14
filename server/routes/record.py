@@ -6,6 +6,7 @@ from server.schemas.record import record_schema, records_schema
 record = Blueprint('record', __name__)
 
 
+@jwt_required()
 @record.route('/record/<id>', methods=['GET'])
 def get_record(id):
     record = RecordModel.query.get(id)
@@ -14,6 +15,7 @@ def get_record(id):
     return jsonify(record_schema.dump(record))
 
 
+@jwt_required()
 @record.route('/record', methods=['POST'])
 def add_record():
     data = request.get_json()
@@ -30,6 +32,7 @@ def add_record():
     return jsonify(record_schema.dump(new_record)), 201
 
 
+@jwt_required()
 @record.route('/record/<id>', methods=['DELETE'])
 def delete_record(id):
     record = RecordModel.query.get(id)
@@ -40,6 +43,7 @@ def delete_record(id):
     return jsonify(record_schema.dump(record)), 200
 
 
+@jwt_required()
 @record.route('/record', methods=['GET'])
 def get_filtered_records():
     data = request.get_json()

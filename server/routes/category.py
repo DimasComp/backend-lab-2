@@ -5,6 +5,8 @@ from server.schemas.category import category_schema
 
 category = Blueprint('category', __name__)
 
+
+@jwt_required()
 @category.route('/category', methods=['GET'])
 def get_category():
     data = request.get_json()
@@ -15,6 +17,8 @@ def get_category():
         return jsonify({'error': 'Category not found'}), 404
     return jsonify(category.to_dict())
 
+
+@jwt_required()
 @category.route('/category', methods=['POST'])
 def add_category():
     data = request.get_json()
@@ -26,6 +30,8 @@ def add_category():
     db.session.commit()
     return jsonify(new_category.to_dict()), 201
 
+
+@jwt_required()
 @category.route('/category', methods=['DELETE'])
 def delete_category():
     data = request.get_json()

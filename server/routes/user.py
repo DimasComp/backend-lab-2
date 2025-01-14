@@ -5,7 +5,7 @@ from server.schemas.user import user_schema, users_schema
 from server.globals import db, jwt
 import uuid
 from passlib.hash import pbkdf2_sha256
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, create_access_token
 
 user = Blueprint('user', __name__)
 
@@ -51,7 +51,7 @@ def login():
         return jsonify({'error': 'User not found'}), 404
     if not pbkdf2_sha256.verify(data['password'], user.password):
         return jsonify({'error': 'Invalid password'}), 400
-    return jsonify({'token': jwt.create_access_token(identity=user.id)}), 200
+    return jsonify({'token': create_access_token(identity=user.id)}), 200
 
 
 @jwt_required()

@@ -2,8 +2,9 @@ from flask import Blueprint, jsonify, request
 from server.models.user import UserModel
 from server.models.wallet import WalletModel
 from server.schemas.user import user_schema, users_schema
-from server.globals import db
+from server.globals import db, jwt
 import uuid
+import pbkdf2_sha256
 
 user = Blueprint('user', __name__)
 
@@ -21,7 +22,7 @@ def get_user(id):
     return jsonify(user_schema.dump(user))
 
 @user.route('/user', methods=['POST'])
-def add_user():
+def register():
     data = request.get_json()
     errors = user_schema.validate(data)
     if errors:
@@ -29,10 +30,23 @@ def add_user():
     wallet_id = uuid.uuid4().hex
     new_wallet = WalletModel(id=wallet_id)
     db.session.add(new_wallet)
-    new_user = UserModel(name=data['name'], wallet_id=wallet_id)
+    pass_hash = pbkdf2_sha256.hash(data['password'])
+    new_user = UserModel(name=data['name'], wallet_id=wallet_id, password=pass_hash)
     db.session.add(new_user)
     db.session.commit()
     return jsonify(user_schema.dump(new_user)), 201
+
+@user.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    if 'name' not in data or 'password' not in data:
+        return jsonify({'error': 'Missing name or password'}), 400
+    user = UserModel.query.filter_by(name=data['name']).first()
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    if not pbkdf2_sha256.verify(data['password'], user.password):
+        return jsonify({'error': 'Invalid password'}), 400
+    return jsonify({'token': jwt.create_access_token(identity=user.id)}), 200
 
 
 @user.route('/user/<id>', methods=['DELETE'])

@@ -9,6 +9,7 @@ class UserModel(db.Model):
     id = db.Column(db.String(32), primary_key=True,
                    default=lambda: uuid.uuid4().hex)
     name = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(64), nullable=False)
     wallet_id = db.Column(db.String(32), db.ForeignKey('wallets.id'))
     wallet = db.relationship('WalletModel', backref='user', uselist=False)
 

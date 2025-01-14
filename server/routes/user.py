@@ -4,7 +4,8 @@ from server.models.wallet import WalletModel
 from server.schemas.user import user_schema, users_schema
 from server.globals import db, jwt
 import uuid
-import pbkdf2_sha256
+from passlib.hash import pbkdf2_sha256
+from flask_jwt_extended import jwt_required
 
 user = Blueprint('user', __name__)
 

@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from server.globals import db
 from server.models.category import CategoryModel
 from server.schemas.category import category_schema
+from flask_jwt_extended import jwt_required
 
 category = Blueprint('category', __name__)
 

@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from server.globals import db
 from server.models.record import RecordModel
 from server.schemas.record import record_schema, records_schema
+from flask_jwt_extended import jwt_required
 
 record = Blueprint('record', __name__)
 
